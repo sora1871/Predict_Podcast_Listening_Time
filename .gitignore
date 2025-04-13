@@ -7,3 +7,4 @@ models/
 *.feather
 .ipynb_checkpoints/
 __pycache__/
+sandbox/
