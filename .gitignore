@@ -1,0 +1,9 @@
+data/
+outputs/
+features/
+models/
+*.csv
+*.pkl
+*.feather
+.ipynb_checkpoints/
+__pycache__/
