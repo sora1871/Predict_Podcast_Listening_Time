@@ -4,4 +4,4 @@ numpy
 scikit-learn
 lightgbm
 matplotlib  
-matplotlib.pyplot
+# force update for Streamlit Cloud
