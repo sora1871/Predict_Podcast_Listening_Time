@@ -1,9 +1,8 @@
 data/
 outputs/
 features/
-models/
-notebooks/models/
 models2/
+notebooks/models/
 *.csv
 *.pkl
 *.feather
