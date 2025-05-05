@@ -76,7 +76,7 @@ df['Guest_Popularity_percentage'] = df['Guest_Popularity_percentage'].fillna(df[
 
 
 #データセット作成
-x_train = df.drop(["id",'Episode_Sentiment','Publication_Time'], axis=1)
+x_train = df.drop(["id"], axis=1)
 id_train = df[["id"]]
 
 train_oof, imp, metrics = run_baseline_training(x_train, id_train)
