@@ -1,7 +1,6 @@
 data/
 outputs/
 features/
-models/
 models2/
 *.csv
 *.pkl

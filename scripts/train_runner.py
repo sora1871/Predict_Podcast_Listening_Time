@@ -3,7 +3,7 @@
 import pandas as pd
 from train import train_lgb_regression
 
-def run_baseline_training(x_train, y_train, id_train, save_dir="models"):
+def run_baseline_training(x_train, y_train, id_train, save_dir="../models"):
     # ハイパーパラメータ（ベースライン）
     params = {
         'objective': 'regression',

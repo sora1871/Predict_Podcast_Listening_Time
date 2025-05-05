@@ -14,7 +14,7 @@ def train_lgb_regression(input_x,
                          params,
                          list_nfold=[0,1,2,3,4],
                          n_splits=5,
-                         save_dir="models"):
+                         save_dir="../models"):
     train_oof = np.zeros(len(input_x))
     metrics = []
     imp = pd.DataFrame()
