@@ -10,7 +10,6 @@ from scripts.predict import predict_lgb_regression
 from scripts.basic_feature import preprocess_features
 from scripts.feature_isna import handle_missing_values
 
-# Apply Japanese web font styling for Cloud compatibility (optional)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
@@ -24,13 +23,13 @@ st.markdown("""
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # -----------------------------
-# 🎵 App Title
+# 🎧 App Title
 # -----------------------------
-st.title("\ud83c\udfb5 Podcast Listening Time Prediction App")
-st.markdown("Enter information like genre and guest popularity to predict the expected listening time (in minutes).")
+st.title("🎧 Podcast Listening Time Prediction App")
+st.markdown("Enter the genre, popularity scores, and number of ads to predict expected listening time (in minutes).")
 
 # -----------------------------
-# 📍 User Input (4 items)
+# 📝 User Inputs
 # -----------------------------
 genre = st.selectbox("Genre", ["Technology", "Education", "Comedy", "Society & Culture"])
 host_popularity = st.slider("Host Popularity (%)", 0, 100, 50)
@@ -41,7 +40,6 @@ ads = st.number_input("Number of Ads", min_value=0, max_value=10, value=1)
 # 🔮 Prediction Button
 # -----------------------------
 if st.button("Predict"):
-    # Create DataFrame with input values + defaults
     base_df = pd.DataFrame([{
         "Podcast_Name": "Default Podcast",
         "Episode_Title": "Episode X",
@@ -55,7 +53,6 @@ if st.button("Predict"):
         "Episode_Sentiment": "Neutral"
     }])
 
-    # Preprocessing
     base_df = handle_missing_values(base_df)
     base_df = preprocess_features(base_df)
 
@@ -69,17 +66,16 @@ if st.button("Predict"):
     base_df = base_df[expected_columns]
     input_id = pd.DataFrame({"id": [0]})
 
-    # Prediction
     result = predict_lgb_regression(base_df, input_id, model_dir="models")
     pred_minutes = round(result["pred"].iloc[0], 2)
     st.success(f"📈 Predicted Listening Time: **{pred_minutes} minutes**")
 
     # ====================
-    # 🌟 Sensitivity Analysis Charts
+    # 🎯 Sensitivity Analysis Charts
     # ====================
 
     # 1. Host Popularity
-    st.subheader("📊 Impact of Host Popularity")
+    st.subheader("📊 Effect of Host Popularity")
     vals = list(range(0, 101, 5))
     preds = []
     for v in vals:
@@ -94,7 +90,7 @@ if st.button("Predict"):
     st.pyplot(fig)
 
     # 2. Guest Popularity
-    st.subheader("📊 Impact of Guest Popularity")
+    st.subheader("📊 Effect of Guest Popularity")
     vals = list(range(0, 101, 5))
     preds = []
     for v in vals:
@@ -112,7 +108,7 @@ if st.button("Predict"):
     st.pyplot(fig)
 
     # 3. Number of Ads
-    st.subheader("📊 Impact of Number of Ads")
+    st.subheader("📊 Effect of Number of Ads")
     vals = list(range(0, 4))
     preds = []
     for v in vals:
@@ -127,7 +123,7 @@ if st.button("Predict"):
     st.pyplot(fig)
 
     # 4. Genre
-    st.subheader("📊 Impact of Genre")
+    st.subheader("📊 Effect of Genre")
     genre_list = ["Technology", "Education", "Comedy", "Sports"]
     preds = []
     for g in genre_list:
@@ -140,5 +136,5 @@ if st.button("Predict"):
     ax.bar(genre_list, preds)
     ax.set_xlabel("Genre")
     ax.set_ylabel("Listening Time (minutes)")
-    ax.set_title("Listening Time Prediction by Genre")
+    ax.set_title("Listening Time by Genre")
     st.pyplot(fig)
