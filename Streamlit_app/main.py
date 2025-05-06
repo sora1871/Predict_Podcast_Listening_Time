@@ -1,5 +1,14 @@
 import sys
 import os
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+
+from scripts.predict import predict_lgb_regression
+from scripts.basic_feature import preprocess_features
+from scripts.feature_isna import handle_missing_values
 
 st.markdown("""
     <style>
@@ -13,16 +22,6 @@ st.markdown("""
 
 # モジュール検索パスにプロジェクトルートを追加
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-import streamlit as st
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib
-
-from scripts.predict import predict_lgb_regression
-from scripts.basic_feature import preprocess_features
-from scripts.feature_isna import handle_missing_values
 
 # -----------------------------
 # 🎧 アプリタイトル
