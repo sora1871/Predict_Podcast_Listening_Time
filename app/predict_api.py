@@ -2,7 +2,8 @@ import joblib
 import pandas as pd
 from pathlib import Path
 import sys
-
+import matplotlib
+matplotlib.rcParams["font.family"] = "IPAexGothic"  # または "Meiryo", "MS Gothic" など
 # -------------------------------
 # scripts ディレクトリを import パスに追加
 # -------------------------------
