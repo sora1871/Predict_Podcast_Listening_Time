@@ -1,6 +1,16 @@
 import sys
 import os
 
+st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+    html, body, [class*="css"] {
+        font-family: 'Noto Sans JP', sans-serif !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
 # モジュール検索パスにプロジェクトルートを追加
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -9,12 +19,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-
-import matplotlib
-matplotlib.rcParams["font.family"] = "IPAPGothic"  # 例：IPAフォント（Cloudでは使えない場合も）
-
-# または、使えるフォントに切り替える
-matplotlib.rcParams["font.sans-serif"] = ["DejaVu Sans"]  # 英語+限定的日本語サポート
 
 from scripts.predict import predict_lgb_regression
 from scripts.basic_feature import preprocess_features
