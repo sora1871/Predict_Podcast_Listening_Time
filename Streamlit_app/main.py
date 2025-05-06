@@ -10,6 +10,7 @@ from scripts.predict import predict_lgb_regression
 from scripts.basic_feature import preprocess_features
 from scripts.feature_isna import handle_missing_values
 
+# Apply Japanese web font styling for Cloud compatibility (optional)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
@@ -19,29 +20,28 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-# モジュール検索パスにプロジェクトルートを追加
+# Add project root to module search path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # -----------------------------
-# 🎧 アプリタイトル
+# 🎵 App Title
 # -----------------------------
-st.title("🎧 ポッドキャストのリスニング時間予測アプリ")
-st.markdown("ジャンルや出演者の人気度などを入力すると、予測されるリスニング時間（分）を表示します。")
+st.title("\ud83c\udfb5 Podcast Listening Time Prediction App")
+st.markdown("Enter information like genre and guest popularity to predict the expected listening time (in minutes).")
 
 # -----------------------------
-# 📝 ユーザー入力（4項目）
+# 📍 User Input (4 items)
 # -----------------------------
-genre = st.selectbox("ジャンル", ["Technology", "Education", "Comedy", "Society & Culture"])
-host_popularity = st.slider("ホストの人気度（%）", 0, 100, 50)
-guest_popularity = st.slider("ゲストの人気度（%）", 0, 100, 50)
-ads = st.number_input("広告の数", min_value=0, max_value=10, value=1)
+genre = st.selectbox("Genre", ["Technology", "Education", "Comedy", "Society & Culture"])
+host_popularity = st.slider("Host Popularity (%)", 0, 100, 50)
+guest_popularity = st.slider("Guest Popularity (%)", 0, 100, 50)
+ads = st.number_input("Number of Ads", min_value=0, max_value=10, value=1)
 
 # -----------------------------
-# 🔮 予測ボタン
+# 🔮 Prediction Button
 # -----------------------------
-if st.button("予測する"):
-    # --- 入力値＋デフォルト値をまとめてDataFrame化 ---
+if st.button("Predict"):
+    # Create DataFrame with input values + defaults
     base_df = pd.DataFrame([{
         "Podcast_Name": "Default Podcast",
         "Episode_Title": "Episode X",
@@ -55,7 +55,7 @@ if st.button("予測する"):
         "Episode_Sentiment": "Neutral"
     }])
 
-    # --- 前処理 ---
+    # Preprocessing
     base_df = handle_missing_values(base_df)
     base_df = preprocess_features(base_df)
 
@@ -69,17 +69,17 @@ if st.button("予測する"):
     base_df = base_df[expected_columns]
     input_id = pd.DataFrame({"id": [0]})
 
-    # --- 予測 ---
+    # Prediction
     result = predict_lgb_regression(base_df, input_id, model_dir="models")
     pred_minutes = round(result["pred"].iloc[0], 2)
-    st.success(f"📈 予測リスニング時間は **{pred_minutes} 分** です。")
+    st.success(f"📈 Predicted Listening Time: **{pred_minutes} minutes**")
 
     # ====================
-    # 🎯 感度分析グラフ
+    # 🌟 Sensitivity Analysis Charts
     # ====================
 
-    # 1. ホスト人気度
-    st.subheader("📊 ホスト人気度による変化")
+    # 1. Host Popularity
+    st.subheader("📊 Impact of Host Popularity")
     vals = list(range(0, 101, 5))
     preds = []
     for v in vals:
@@ -88,13 +88,13 @@ if st.button("予測する"):
         preds.append(predict_lgb_regression(df, input_id, model_dir="models")["pred"].iloc[0])
     fig, ax = plt.subplots()
     ax.plot(vals, preds)
-    ax.set_xlabel("ホスト人気度（%）")
-    ax.set_ylabel("リスニング時間（分）")
-    ax.set_title("ホスト人気度 vs リスニング時間")
+    ax.set_xlabel("Host Popularity (%)")
+    ax.set_ylabel("Listening Time (minutes)")
+    ax.set_title("Host Popularity vs. Listening Time")
     st.pyplot(fig)
 
-    # 2. ゲスト人気度
-    st.subheader("📊 ゲスト人気度による変化")
+    # 2. Guest Popularity
+    st.subheader("📊 Impact of Guest Popularity")
     vals = list(range(0, 101, 5))
     preds = []
     for v in vals:
@@ -106,13 +106,13 @@ if st.button("予測する"):
         preds.append(predict_lgb_regression(df, input_id, model_dir="models")["pred"].iloc[0])
     fig, ax = plt.subplots()
     ax.plot(vals, preds)
-    ax.set_xlabel("ゲスト人気度（%）")
-    ax.set_ylabel("リスニング時間（分）")
-    ax.set_title("ゲスト人気度 vs リスニング時間")
+    ax.set_xlabel("Guest Popularity (%)")
+    ax.set_ylabel("Listening Time (minutes)")
+    ax.set_title("Guest Popularity vs. Listening Time")
     st.pyplot(fig)
 
-    # 3. 広告数
-    st.subheader("📊 広告数による変化")
+    # 3. Number of Ads
+    st.subheader("📊 Impact of Number of Ads")
     vals = list(range(0, 4))
     preds = []
     for v in vals:
@@ -121,13 +121,13 @@ if st.button("予測する"):
         preds.append(predict_lgb_regression(df, input_id, model_dir="models")["pred"].iloc[0])
     fig, ax = plt.subplots()
     ax.bar(vals, preds)
-    ax.set_xlabel("広告数")
-    ax.set_ylabel("リスニング時間（分）")
-    ax.set_title("広告数 vs リスニング時間")
+    ax.set_xlabel("Number of Ads")
+    ax.set_ylabel("Listening Time (minutes)")
+    ax.set_title("Number of Ads vs. Listening Time")
     st.pyplot(fig)
 
-    # 4. ジャンル
-    st.subheader("📊 ジャンルによる変化")
+    # 4. Genre
+    st.subheader("📊 Impact of Genre")
     genre_list = ["Technology", "Education", "Comedy", "Sports"]
     preds = []
     for g in genre_list:
@@ -138,7 +138,7 @@ if st.button("予測する"):
         preds.append(predict_lgb_regression(df, input_id, model_dir="models")["pred"].iloc[0])
     fig, ax = plt.subplots()
     ax.bar(genre_list, preds)
-    ax.set_xlabel("ジャンル")
-    ax.set_ylabel("リスニング時間（分）")
-    ax.set_title("ジャンル別リスニング時間予測")
+    ax.set_xlabel("Genre")
+    ax.set_ylabel("Listening Time (minutes)")
+    ax.set_title("Listening Time Prediction by Genre")
     st.pyplot(fig)
