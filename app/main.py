@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from app.predict_api import predict_single  # predict.py の予測関数を呼び出す
+import matplotlib
+matplotlib.rcParams["font.family"] = "IPAexGothic"  # または "Meiryo", "MS Gothic" など
 
 app = FastAPI(
     title="Podcast Listening Time Prediction API",
