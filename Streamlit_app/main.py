@@ -9,8 +9,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
-# 💬 日本語フォントを明示的に指定（環境に合わせて調整）
-matplotlib.rcParams["font.family"] = "Meiryo"
+
+import matplotlib
+matplotlib.rcParams["font.family"] = "IPAPGothic"  # 例：IPAフォント（Cloudでは使えない場合も）
+
+# または、使えるフォントに切り替える
+matplotlib.rcParams["font.sans-serif"] = ["DejaVu Sans"]  # 英語+限定的日本語サポート
+
 from scripts.predict import predict_lgb_regression
 from scripts.basic_feature import preprocess_features
 from scripts.feature_isna import handle_missing_values
