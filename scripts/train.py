@@ -7,6 +7,7 @@ import numpy as np
 import lightgbm as lgb
 from sklearn.model_selection import KFold
 from sklearn.metrics import mean_squared_error
+from lightgbm import early_stopping,log_evaluation  # 追加
 
 def train_lgb_regression(input_x,
                          input_y,
@@ -33,9 +34,12 @@ def train_lgb_regression(input_x,
         model.fit(
             x_tr, y_tr,
             eval_set=[(x_tr, y_tr), (x_va, y_va)],
-            early_stopping_rounds=100,
-            verbose=100
+            callbacks=[
+                early_stopping(100),
+                log_evaluation(100)  # ← これが verbose 相当
+            ]
         )
+        
         
         fname_lgb = os.path.join(save_dir, f"model_lgb_fold{nfold}.joblib")
         joblib.dump(model, fname_lgb)

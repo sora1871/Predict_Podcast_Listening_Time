@@ -1,8 +1,8 @@
 # scripts/basic_feature.py
 
 import pandas as pd
-from scripts.utils import reduce_mem_usage
-from scripts.feature_isna import handle_missing_values
+from utils import reduce_mem_usage
+from feature_isna import handle_missing_values
 
 def preprocess_features(df):
     # object型 → category型に変換

@@ -17,7 +17,6 @@ def run_baseline_training(x_train, y_train, id_train, save_dir="../models"):
         'bagging_freq': 5,
         'max_depth': -1,
         'n_estimators': 1000,
-        'early_stopping_rounds': 100,
         'random_state': 42
     }
 
