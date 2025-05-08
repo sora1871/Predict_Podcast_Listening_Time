@@ -20,8 +20,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Add project root to module search path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from scripts.basic_feature import preprocess_features
 from scripts.feature_isna import handle_missing_values

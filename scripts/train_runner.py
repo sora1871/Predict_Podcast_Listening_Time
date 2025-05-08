@@ -1,7 +1,7 @@
 # scripts/train_runner.py
 
 import pandas as pd
-from train import train_lgb_regression
+from scripts.train import train_lgb_regression
 
 def run_baseline_training(x_train, y_train, id_train, save_dir="../models"):
     y_train = y_train.astype(float)

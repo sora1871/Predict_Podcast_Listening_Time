@@ -4,12 +4,11 @@ from pathlib import Path
 import sys
 # -------------------------------
 # scripts ディレクトリを import パスに追加
-# -------------------------------
-sys.path.append(str(Path(__file__).resolve().parent.parent / "scripts"))
+# -----------
 
 # basic_feature.py の前処理関数を import
-from basic_feature import preprocess_features
-from feature_isna import handle_missing_values  # ← 新しく追加
+from scripts.basic_feature import preprocess_features
+from scripts.feature_isna import handle_missing_values  # ← 新しく追加
 
 # -------------------------------
 # モデル（5fold）をすべて読み込む
