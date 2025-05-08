@@ -3,14 +3,14 @@ FROM python:3.9-slim
 WORKDIR /app
 
 COPY requirements.txt .
+
+RUN apt-get update && apt-get install -y libgomp1
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./streamlit_app /app/streamlit_app
-COPY ./models /app/model
-COPY ./scripts /app/scripts   
+COPY ./app /app/app
+COPY ./models /app/models
+COPY ./scripts /app/scripts 
 
-ENV PYTHONPATH=/app  
+EXPOSE 8000
 
-EXPOSE 8501
-
-CMD ["streamlit", "run", "streamlit_app/main.py", "--server.port=8501", "--server.enableCORS=false"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
