@@ -12,6 +12,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# 入力データの構造
 class PodcastInput(BaseModel):
     Podcast_Name: str
     Episode_Title: str
@@ -24,17 +25,26 @@ class PodcastInput(BaseModel):
     Number_of_Ads: int
     Episode_Sentiment: str
 
+# NaN や inf を排除する補助関数
+def sanitize_prediction(value: float) -> float | None:
+    if math.isnan(value) or math.isinf(value):
+        return None  # または 0.0 にすることも可能
+    return float(value)
+
+# ヘルスチェック用
 @app.get("/")
 def read_root():
     return {"message": "Podcast Listening Time Prediction API is running!"}
 
+# 予測エンドポイント
 @app.post("/predict")
 def predict(data: PodcastInput):
     input_data = data.dict()
+    
+    # 予測値を取得
     prediction = predict_single(input_data)
+    
+    # JSONに安全な値に変換
+    clean_prediction = sanitize_prediction(prediction)
 
-    # JSONにできない値は None に変換
-    if isinstance(prediction, float) and not math.isfinite(prediction):
-        prediction = None
-
-    return {"predicted_listening_time": prediction}
+    return {"predicted_listening_time": clean_prediction}
