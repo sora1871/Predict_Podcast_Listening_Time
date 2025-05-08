@@ -25,11 +25,13 @@ class PodcastInput(BaseModel):
     Number_of_Ads: int
     Episode_Sentiment: str
 
-# NaN や inf を排除する補助関数
-def sanitize_prediction(value: float) -> float | None:
+from typing import Optional  # 追加
+
+def sanitize_prediction(value: float) -> Optional[float]:
     if math.isnan(value) or math.isinf(value):
-        return None  # または 0.0 にすることも可能
+        return None
     return float(value)
+
 
 # ヘルスチェック用
 @app.get("/")
