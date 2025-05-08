@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from app.predict_api import predict_single  # predict.py の予測関数を呼び出す
+from app.predict_api import predict_single
 import matplotlib
-matplotlib.rcParams["font.family"] = "IPAexGothic"  # または "Meiryo", "MS Gothic" など
+import math
+
+matplotlib.rcParams["font.family"] = "IPAexGothic"
 
 app = FastAPI(
     title="Podcast Listening Time Prediction API",
@@ -10,9 +12,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# -------------------------------
-# 入力データのスキーマ（前処理前の「生の」データ形式）
-# -------------------------------
 class PodcastInput(BaseModel):
     Podcast_Name: str
     Episode_Title: str
@@ -25,18 +24,17 @@ class PodcastInput(BaseModel):
     Number_of_Ads: int
     Episode_Sentiment: str
 
-# -------------------------------
-# 動作確認用（GETリクエスト）
-# -------------------------------
 @app.get("/")
 def read_root():
     return {"message": "Podcast Listening Time Prediction API is running!"}
 
-# -------------------------------
-# 予測エンドポイント（POSTリクエスト）
-# -------------------------------
 @app.post("/predict")
 def predict(data: PodcastInput):
-    input_data = data.dict()                  # 入力データ（BaseModel）→ dict に変換
-    prediction = predict_single(input_data)   # predict.py の関数で予測
+    input_data = data.dict()
+    prediction = predict_single(input_data)
+
+    # JSONにできない値は None に変換
+    if isinstance(prediction, float) and not math.isfinite(prediction):
+        prediction = None
+
     return {"predicted_listening_time": prediction}
