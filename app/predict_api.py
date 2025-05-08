@@ -1,7 +1,6 @@
 import joblib
 import pandas as pd
 from pathlib import Path
-import sys
 # -------------------------------
 # scripts ディレクトリを import パスに追加
 # -----------
